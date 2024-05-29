@@ -1,0 +1,32 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "c2cfd2fb32a3bdaf1822308f7021d9ec"
+name = "Hyperspace New Release Manager"
+handle = "hyperspace-new-release-manage"
+application_url = "https://int-tongue-how-cry.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "release-app.myshopify.com"
+
+[access.admin]
+direct_api_mode = "offline"
+embedded_app_direct_api_access = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_product_listings,read_publications,read_themes,write_products,write_themes"
+
+[auth]
+redirect_urls = [
+  "https://int-tongue-how-cry.trycloudflare.com/auth/callback",
+  "https://int-tongue-how-cry.trycloudflare.com/auth/shopify/callback",
+  "https://int-tongue-how-cry.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-04"
+
+[pos]
+embedded = false

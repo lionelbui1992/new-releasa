@@ -1,0 +1,30 @@
+pipeline {
+    agent {
+        label 'aht-pt-01'
+    }
+    environment {
+        DIR = '/var/www/html/M_DC5_SHOPIFY_MAHPS2402NRM'
+    }
+    stages {
+        stage('change permission') {
+            steps {
+                    sh 'sudo /bin/chown aht ${DIR} -R'
+                    sh 'sudo /bin/chgrp aht ${DIR} -R'
+                }
+            }
+        stage('Check out') {
+            steps {
+                dir("${DIR}") {
+                    git branch: 'develop', credentialsId: 'gitlab', url: 'https://gitlab.arrowhitech.co/0_pt_d1_loitl/M_DC5_SHOPIFY_MAHPS2402NRM.git'
+                }
+            }
+        }
+
+        stage('revoke permission') {
+            steps {
+                    sh 'sudo /bin/chown aht_pt2 ${DIR} -R'
+                    sh 'sudo /bin/chgrp aht_pt2 ${DIR} -R'
+                }
+            }
+        }
+    }

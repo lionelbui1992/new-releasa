@@ -1,0 +1,150 @@
+<style>
+  /*Release page*/
+  .section-releases-content {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 30px;
+    column-gap: 30px;
+  }
+  .section-releases-content .releases-month {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  .section-releases-content .releases-month span {
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .section-releases-content .releases-product {
+    width: calc(50% - 15px);
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+  }
+  .section-releases-content .releases-product .releases-product-image {
+    width: 100%;
+    background: #ededed;
+  }
+  .section-releases-content .releases-product .releases-product-image img {
+    max-height: 180px;
+    margin: 0 auto;
+    padding: 10px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .section-releases-content .releases-product .releases-product-info {
+    width: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 7px;
+  }
+  .section-releases-content .releases-product .releases-product-info .releases-product-name {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 23px;
+  }
+  .section-releases-content .releases-product .releases-product-info > * {
+    width: 100%;
+    line-height: 1;
+  }
+  .section-releases-content .releases-product .releases-product-info .releases-product-shop-now,
+  .section-releases-content .releases-product .releases-product-info .releases-product-raffle {
+    font-weight: 600;
+    margin-top: 15px;
+  }
+  .section-releases-content .releases-product .releases-product-info .releases-product-shop-now:hover {
+    text-decoration: underline;
+  }
+  .section-releases-content .releases-product .releases-product-info .releases-product-raffle {
+    color: red;
+    text-transform: uppercase;
+  }
+  .section-releases-content .releases-product + .releases-month {
+    margin-top: 35px;
+  }
+  /*Release page*/
+</style>
+
+<div class="section-releases-content">
+  {% assign hyper_release_manage_collection = collections['hyper_release_manage'] %}
+  {% if hyper_release_manage_collection %}
+    {% assign unique_months = "" %}
+    {% for product in hyper_release_manage_collection.products %}
+      {% if product.metafields.custom.release_status %}
+        {% capture release_month %}{{ product.metafields.custom.release_start_date | date: "%Y-%m" }}{% endcapture %}
+        {% unless unique_months contains release_month %}
+          {% assign unique_months = unique_months | append: release_month | append: ',' %}
+        {% endunless %}
+      {% endif %}
+    {% endfor %}
+
+    {% assign unique_months = unique_months | split: ',' | sort %}
+
+    {% for month in unique_months %}
+      {% if month != "" %}
+        {% assign month_year = month | append: "-01" | date: "%B %Y" %}
+        <div class="releases-month">
+          <span>{{ month_year }}</span>
+        </div>
+        {% for product in hyper_release_manage_collection.products %}
+          {% if product.metafields.custom.release_status %}
+            {% capture product_month %}{{ product.metafields.custom.release_start_date | date: "%Y-%m" }}{% endcapture %}
+            {% if product_month == month %}
+              <div class="releases-product">
+                {% for image in product.images %}
+                  <div class="releases-product-image">
+                    <img src="{{ image.src | product_img_url: 'large' }}">
+                  </div>
+                {% endfor %}
+                <div class="releases-product-info">
+                  <span class="releases-product-name">{{ product.title }}</span>
+                  {% if product.type %}
+                    <span class="releases-product-type">{{ product.type }}</span>
+                  {% endif %}
+
+                  {% if product.variants.size > 1 %}
+                    {% for option in product.options_with_values %}
+                      <div class="releases-product-{{ option.name | handleize }}">
+                        {% assign formatted_values = '' %}
+                        {% for value in option.values %}
+                          {% assign formatted_values = formatted_values | append: value %}
+                          {% if forloop.last == false %}
+                            {% assign formatted_values = formatted_values | append: '/' %}
+                          {% endif %}
+                        {% endfor %}
+                        {{ formatted_values }}
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+
+                  {% if product.sku %}
+                    <span class="releases-product-style-no">{{ product.sku }}</span>
+                  {% endif %}
+                  {% if product.metafields.custom.release_start_date %}
+                    <span class="releases-product-release-date">{{ product.metafields.custom.release_start_date | date: "%B %d, %Y" }}</span>
+                  {% endif %}
+                  {% if product.price %}
+                    <span class="releases-product-price"><span class="money">{{ product.price | money }}</span></span>
+                  {% endif %}
+                  <a class="releases-product-shop-now" href="/products/{{ product.handle }}">Shop Now</a>
+
+                </div>
+              </div>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  {% else %}
+    <div style="text-align:center;">No products found in the Release collection.</div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Release Manage",
+  "target": "section"
+}
+{% endschema %}

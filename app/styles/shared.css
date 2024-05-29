@@ -1,0 +1,126 @@
+
+
+.release_manage th.Polaris-IndexTable__TableHeading.Polaris-IndexTable__TableHeading--first {
+  width: 50px;
+}
+
+.release_manage td.Polaris-IndexTable__TableCell:nth-child(2) {
+  display: flex;
+  justify-content: center;
+}
+
+.release_manage div.Polaris-Tabs__NewTab {
+  display: none;
+}
+
+.release_manage .Polaris-IndexTable__ColumnHeaderCheckboxWrapper,
+.release_manage .Polaris-IndexTable__BulkActionsWrapper.Polaris-IndexTable__BulkActionsWrapperVisible{
+  display: none !important;
+}
+
+.release_manage .Polaris-Checkbox__Input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+/* Tạo switch container */
+.release_manage .Polaris-Checkbox {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 25px;
+}
+
+.release_manage .Polaris-Filters__FiltersWrapper {
+  display: none;
+}
+
+/* Style cho slider */
+.release_manage .Polaris-Checkbox__Backdrop {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 25px;
+  width: 36px;
+  height: 18px;
+}
+
+.release_manage .Polaris-Checkbox__Backdrop:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 4px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Change background color when checked */
+.release_manage .Polaris-Checkbox__Input:checked + .Polaris-Checkbox__Backdrop {
+  background-color: #005BD3;
+  box-shadow: none;
+}
+
+/* Move the toggle switch when checked */
+.release_manage .Polaris-Checkbox__Input:checked + .Polaris-Checkbox__Backdrop:before {
+  transform: translateX(16px);
+}
+
+/* Hide default Polaris checkbox icon */
+.release_manage .Polaris-Checkbox__Icon {
+  display: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 18px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 18px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #005BD3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(18px);
+}
